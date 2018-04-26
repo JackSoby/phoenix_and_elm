@@ -1,0 +1,790 @@
+var _user$project$Main$deleteUserRequest = function (user) {
+	return _elm_lang$http$Http$request(
+		{
+			method: 'DELETE',
+			headers: {ctor: '[]'},
+			url: A2(
+				_elm_lang$core$Basics_ops['++'],
+				'api/v1/users/',
+				_elm_lang$core$Basics$toString(user.id)),
+			body: _elm_lang$http$Http$emptyBody,
+			expect: _elm_lang$http$Http$expectString,
+			timeout: _elm_lang$core$Maybe$Nothing,
+			withCredentials: false
+		});
+};
+var _user$project$Main$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$none;
+};
+var _user$project$Main$User = F6(
+	function (a, b, c, d, e, f) {
+		return {id: a, name: b, email: c, phone: d, state: e, city: f};
+	});
+var _user$project$Main$decodeText = A7(
+	_elm_lang$core$Json_Decode$map6,
+	_user$project$Main$User,
+	A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$int),
+	A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'email', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'phone', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'state', _elm_lang$core$Json_Decode$string),
+	A2(_elm_lang$core$Json_Decode$field, 'city', _elm_lang$core$Json_Decode$string));
+var _user$project$Main$stringDecoder = _elm_lang$core$Json_Decode$list(_user$project$Main$decodeText);
+var _user$project$Main$jsonDecoder = A2(_elm_lang$core$Json_Decode$field, 'data', _user$project$Main$stringDecoder);
+var _user$project$Main$newDecoder = A2(_elm_lang$core$Json_Decode$field, 'users', _user$project$Main$decodeText);
+var _user$project$Main$Model = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {users: a, name: b, email: c, phone: d, state: e, city: f, valid: g, update: h};
+	});
+var _user$project$Main$UserUpdated = function (a) {
+	return {ctor: 'UserUpdated', _0: a};
+};
+var _user$project$Main$HandleUpdate = function (a) {
+	return {ctor: 'HandleUpdate', _0: a};
+};
+var _user$project$Main$HandleDelete = function (a) {
+	return {ctor: 'HandleDelete', _0: a};
+};
+var _user$project$Main$renderUserBox = function (user) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('users-box'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{ctor: '[]'},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$span,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text('Name: '),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(user.name),
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{ctor: '[]'},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$span,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text('Phone: '),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(user.phone),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{ctor: '[]'},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$span,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text('Email: '),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(user.email),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$span,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('City: '),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(user.city),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$span,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('State: '),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(user.state),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$button,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onClick(
+											_user$project$Main$HandleDelete(user)),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('crud-button'),
+											_1: {ctor: '[]'}
+										}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('delete'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$button,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Events$onClick(
+												_user$project$Main$HandleUpdate(user)),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('crud-button'),
+												_1: {ctor: '[]'}
+											}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('update'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				}
+			}
+		});
+};
+var _user$project$Main$HandleUpdateValidate = {ctor: 'HandleUpdateValidate'};
+var _user$project$Main$HandleValidate = {ctor: 'HandleValidate'};
+var _user$project$Main$UserDeleted = function (a) {
+	return {ctor: 'UserDeleted', _0: a};
+};
+var _user$project$Main$deleteUserCommand = function (user) {
+	return A2(
+		_elm_lang$http$Http$send,
+		_user$project$Main$UserDeleted,
+		_user$project$Main$deleteUserRequest(user));
+};
+var _user$project$Main$NewUser = function (a) {
+	return {ctor: 'NewUser', _0: a};
+};
+var _user$project$Main$newUser = function (userInput) {
+	var body = _elm_lang$http$Http$jsonBody(userInput);
+	return A2(
+		_elm_lang$http$Http$send,
+		_user$project$Main$NewUser,
+		A3(_elm_lang$http$Http$post, 'api/v1/users', body, _user$project$Main$jsonDecoder));
+};
+var _user$project$Main$encodeUser = function (user) {
+	var encodedUser = _elm_lang$core$Json_Encode$object(
+		{
+			ctor: '::',
+			_0: {
+				ctor: '_Tuple2',
+				_0: 'name',
+				_1: _elm_lang$core$Json_Encode$string(user.name)
+			},
+			_1: {
+				ctor: '::',
+				_0: {
+					ctor: '_Tuple2',
+					_0: 'email',
+					_1: _elm_lang$core$Json_Encode$string(user.email)
+				},
+				_1: {
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'phone',
+						_1: _elm_lang$core$Json_Encode$string(user.phone)
+					},
+					_1: {
+						ctor: '::',
+						_0: {
+							ctor: '_Tuple2',
+							_0: 'state',
+							_1: _elm_lang$core$Json_Encode$string(user.state)
+						},
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '_Tuple2',
+								_0: 'city',
+								_1: _elm_lang$core$Json_Encode$string(user.city)
+							},
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		});
+	return _user$project$Main$newUser(encodedUser);
+};
+var _user$project$Main$HandleStateInput = function (a) {
+	return {ctor: 'HandleStateInput', _0: a};
+};
+var _user$project$Main$HandleCityInput = function (a) {
+	return {ctor: 'HandleCityInput', _0: a};
+};
+var _user$project$Main$HandlePhoneInput = function (a) {
+	return {ctor: 'HandlePhoneInput', _0: a};
+};
+var _user$project$Main$HandleEmailInput = function (a) {
+	return {ctor: 'HandleEmailInput', _0: a};
+};
+var _user$project$Main$HandleNameInput = function (a) {
+	return {ctor: 'HandleNameInput', _0: a};
+};
+var _user$project$Main$view = function (model) {
+	var newButton = function () {
+		var _p0 = model.update;
+		if (_p0.ctor === 'Just') {
+			return A2(
+				_elm_lang$html$Html$button,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('crud-button-new'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$HandleUpdateValidate),
+						_1: {ctor: '[]'}
+					}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('update'),
+					_1: {ctor: '[]'}
+				});
+		} else {
+			return A2(
+				_elm_lang$html$Html$button,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('crud-button-new'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Events$onClick(_user$project$Main$HandleValidate),
+						_1: {ctor: '[]'}
+					}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('new'),
+					_1: {ctor: '[]'}
+				});
+		}
+	}();
+	var errorMessage = function () {
+		var _p1 = model.valid;
+		if (_p1.ctor === 'Just') {
+			return A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('warning-text'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Please fill out all form fields'),
+					_1: {ctor: '[]'}
+				});
+		} else {
+			return A2(
+				_elm_lang$html$Html$div,
+				{ctor: '[]'},
+				{ctor: '[]'});
+		}
+	}();
+	var renderedUsers = A2(_elm_lang$core$List$map, _user$project$Main$renderUserBox, model.users);
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('wrapper-class'),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('users-text'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Users'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('user-form'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$input,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$placeholder('Name'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('input-field'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$HandleNameInput),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$value(model.name),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$input,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$placeholder('Phone'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('input-field'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$HandlePhoneInput),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$value(model.phone),
+												_1: {ctor: '[]'}
+											}
+										}
+									}
+								},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$input,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$placeholder('Email'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('input-field'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$HandleEmailInput),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$value(model.email),
+													_1: {ctor: '[]'}
+												}
+											}
+										}
+									},
+									{ctor: '[]'}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$input,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$placeholder('City'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('input-field'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$HandleCityInput),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$value(model.city),
+														_1: {ctor: '[]'}
+													}
+												}
+											}
+										},
+										{ctor: '[]'}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$input,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$placeholder('State'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$class('input-field'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Events$onInput(_user$project$Main$HandleStateInput),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$value(model.state),
+															_1: {ctor: '[]'}
+														}
+													}
+												}
+											},
+											{ctor: '[]'}),
+										_1: {
+											ctor: '::',
+											_0: newButton,
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: errorMessage,
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{ctor: '[]'},
+							renderedUsers),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		});
+};
+var _user$project$Main$LoadAll = function (a) {
+	return {ctor: 'LoadAll', _0: a};
+};
+var _user$project$Main$getString = A2(
+	_elm_lang$http$Http$send,
+	_user$project$Main$LoadAll,
+	A2(_elm_lang$http$Http$get, 'api/v1/users', _user$project$Main$jsonDecoder));
+var _user$project$Main$init = {
+	ctor: '_Tuple2',
+	_0: A8(
+		_user$project$Main$Model,
+		{ctor: '[]'},
+		'',
+		'',
+		'',
+		'',
+		'',
+		_elm_lang$core$Maybe$Nothing,
+		_elm_lang$core$Maybe$Nothing),
+	_1: _user$project$Main$getString
+};
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		var _p2 = msg;
+		switch (_p2.ctor) {
+			case 'HandleDelete':
+				return {
+					ctor: '_Tuple2',
+					_0: A8(_user$project$Main$Model, model.users, '', '', '', '', '', _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing),
+					_1: _user$project$Main$deleteUserCommand(_p2._0)
+				};
+			case 'HandleUpdate':
+				var _p3 = _p2._0;
+				return {
+					ctor: '_Tuple2',
+					_0: A8(
+						_user$project$Main$Model,
+						model.users,
+						_p3.name,
+						_p3.email,
+						_p3.phone,
+						_p3.state,
+						_p3.city,
+						_elm_lang$core$Maybe$Nothing,
+						_elm_lang$core$Maybe$Just(1)),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'LoadAll':
+				if (_p2._0.ctor === 'Ok') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{users: _p2._0._0}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					var errorText = A2(_elm_lang$core$Debug$log, 'error: ', _p2._0._0);
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'UserUpdated':
+				if (_p2._0.ctor === 'Ok') {
+					return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$getString};
+				} else {
+					var errorText = A2(_elm_lang$core$Debug$log, 'error: ', _p2._0._0);
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'UserDeleted':
+				if (_p2._0.ctor === 'Ok') {
+					return {ctor: '_Tuple2', _0: model, _1: _user$project$Main$getString};
+				} else {
+					var errorText = A2(_elm_lang$core$Debug$log, 'error: ', _p2._0._0);
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'NewUser':
+				if (_p2._0.ctor === 'Ok') {
+					return {
+						ctor: '_Tuple2',
+						_0: _elm_lang$core$Native_Utils.update(
+							model,
+							{users: _p2._0._0}),
+						_1: _elm_lang$core$Platform_Cmd$none
+					};
+				} else {
+					var errorText = A2(_elm_lang$core$Debug$log, 'error: ', _p2._0._0);
+					return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+				}
+			case 'HandleNameInput':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{name: _p2._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'HandleEmailInput':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{email: _p2._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'HandlePhoneInput':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{phone: _p2._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'HandleCityInput':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{city: _p2._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'HandleStateInput':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{state: _p2._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'HandleUpdateValidate':
+				return _elm_lang$core$Native_Utils.eq(model.name, '') ? {
+					ctor: '_Tuple2',
+					_0: A8(
+						_user$project$Main$Model,
+						model.users,
+						model.name,
+						model.email,
+						model.phone,
+						model.state,
+						model.city,
+						_elm_lang$core$Maybe$Just(1),
+						_elm_lang$core$Maybe$Nothing),
+					_1: _elm_lang$core$Platform_Cmd$none
+				} : (_elm_lang$core$Native_Utils.eq(model.phone, '') ? {
+					ctor: '_Tuple2',
+					_0: A8(
+						_user$project$Main$Model,
+						model.users,
+						model.name,
+						model.email,
+						model.phone,
+						model.state,
+						model.city,
+						_elm_lang$core$Maybe$Just(1),
+						_elm_lang$core$Maybe$Nothing),
+					_1: _elm_lang$core$Platform_Cmd$none
+				} : (_elm_lang$core$Native_Utils.eq(model.email, '') ? {
+					ctor: '_Tuple2',
+					_0: A8(
+						_user$project$Main$Model,
+						model.users,
+						model.name,
+						model.email,
+						model.phone,
+						model.state,
+						model.city,
+						_elm_lang$core$Maybe$Just(1),
+						_elm_lang$core$Maybe$Nothing),
+					_1: _elm_lang$core$Platform_Cmd$none
+				} : (_elm_lang$core$Native_Utils.eq(model.city, '') ? {
+					ctor: '_Tuple2',
+					_0: A8(
+						_user$project$Main$Model,
+						model.users,
+						model.name,
+						model.email,
+						model.phone,
+						model.state,
+						model.city,
+						_elm_lang$core$Maybe$Just(1),
+						_elm_lang$core$Maybe$Nothing),
+					_1: _elm_lang$core$Platform_Cmd$none
+				} : (_elm_lang$core$Native_Utils.eq(model.state, '') ? {
+					ctor: '_Tuple2',
+					_0: A8(
+						_user$project$Main$Model,
+						model.users,
+						model.name,
+						model.email,
+						model.phone,
+						model.state,
+						model.city,
+						_elm_lang$core$Maybe$Just(1),
+						_elm_lang$core$Maybe$Nothing),
+					_1: _elm_lang$core$Platform_Cmd$none
+				} : {
+					ctor: '_Tuple2',
+					_0: A8(_user$project$Main$Model, model.users, '', '', '', '', '', _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing),
+					_1: _user$project$Main$encodeUser(
+						{name: model.name, email: model.email, phone: model.phone, state: model.state, city: model.city})
+				}))));
+			default:
+				return _elm_lang$core$Native_Utils.eq(model.name, '') ? {
+					ctor: '_Tuple2',
+					_0: A8(
+						_user$project$Main$Model,
+						model.users,
+						model.name,
+						model.email,
+						model.phone,
+						model.state,
+						model.city,
+						_elm_lang$core$Maybe$Just(1),
+						_elm_lang$core$Maybe$Nothing),
+					_1: _elm_lang$core$Platform_Cmd$none
+				} : (_elm_lang$core$Native_Utils.eq(model.phone, '') ? {
+					ctor: '_Tuple2',
+					_0: A8(
+						_user$project$Main$Model,
+						model.users,
+						model.name,
+						model.email,
+						model.phone,
+						model.state,
+						model.city,
+						_elm_lang$core$Maybe$Just(1),
+						_elm_lang$core$Maybe$Nothing),
+					_1: _elm_lang$core$Platform_Cmd$none
+				} : (_elm_lang$core$Native_Utils.eq(model.email, '') ? {
+					ctor: '_Tuple2',
+					_0: A8(
+						_user$project$Main$Model,
+						model.users,
+						model.name,
+						model.email,
+						model.phone,
+						model.state,
+						model.city,
+						_elm_lang$core$Maybe$Just(1),
+						_elm_lang$core$Maybe$Nothing),
+					_1: _elm_lang$core$Platform_Cmd$none
+				} : (_elm_lang$core$Native_Utils.eq(model.city, '') ? {
+					ctor: '_Tuple2',
+					_0: A8(
+						_user$project$Main$Model,
+						model.users,
+						model.name,
+						model.email,
+						model.phone,
+						model.state,
+						model.city,
+						_elm_lang$core$Maybe$Just(1),
+						_elm_lang$core$Maybe$Nothing),
+					_1: _elm_lang$core$Platform_Cmd$none
+				} : (_elm_lang$core$Native_Utils.eq(model.state, '') ? {
+					ctor: '_Tuple2',
+					_0: A8(
+						_user$project$Main$Model,
+						model.users,
+						model.name,
+						model.email,
+						model.phone,
+						model.state,
+						model.city,
+						_elm_lang$core$Maybe$Just(1),
+						_elm_lang$core$Maybe$Nothing),
+					_1: _elm_lang$core$Platform_Cmd$none
+				} : {
+					ctor: '_Tuple2',
+					_0: A8(_user$project$Main$Model, model.users, '', '', '', '', '', _elm_lang$core$Maybe$Nothing, _elm_lang$core$Maybe$Nothing),
+					_1: _user$project$Main$encodeUser(
+						{name: model.name, email: model.email, phone: model.phone, state: model.state, city: model.city})
+				}))));
+		}
+	});
+var _user$project$Main$main = _elm_lang$html$Html$program(
+	{init: _user$project$Main$init, view: _user$project$Main$view, update: _user$project$Main$update, subscriptions: _user$project$Main$subscriptions})();
