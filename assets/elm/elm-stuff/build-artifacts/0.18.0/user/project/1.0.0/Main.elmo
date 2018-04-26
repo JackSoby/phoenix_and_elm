@@ -31,7 +31,7 @@ var _user$project$Main$decodeText = A7(
 	A2(_elm_lang$core$Json_Decode$field, 'city', _elm_lang$core$Json_Decode$string));
 var _user$project$Main$stringDecoder = _elm_lang$core$Json_Decode$list(_user$project$Main$decodeText);
 var _user$project$Main$jsonDecoder = A2(_elm_lang$core$Json_Decode$field, 'data', _user$project$Main$stringDecoder);
-var _user$project$Main$newDecoder = A2(_elm_lang$core$Json_Decode$field, 'users', _user$project$Main$decodeText);
+var _user$project$Main$newDecoder = A2(_elm_lang$core$Json_Decode$field, 'data', _user$project$Main$decodeText);
 var _user$project$Main$Model = F8(
 	function (a, b, c, d, e, f, g, h) {
 		return {users: a, name: b, email: c, phone: d, state: e, city: f, valid: g, update: h};
@@ -224,7 +224,7 @@ var _user$project$Main$newUser = function (userInput) {
 	return A2(
 		_elm_lang$http$Http$send,
 		_user$project$Main$NewUser,
-		A3(_elm_lang$http$Http$post, 'api/v1/users', body, _user$project$Main$jsonDecoder));
+		A3(_elm_lang$http$Http$post, 'api/v1/users', body, _user$project$Main$newDecoder));
 };
 var _user$project$Main$encodeUser = function (user) {
 	var encodedUser = _elm_lang$core$Json_Encode$object(
@@ -593,7 +593,9 @@ var _user$project$Main$update = F2(
 						ctor: '_Tuple2',
 						_0: _elm_lang$core$Native_Utils.update(
 							model,
-							{users: _p2._0._0}),
+							{
+								users: {ctor: '::', _0: _p2._0._0, _1: model.users}
+							}),
 						_1: _elm_lang$core$Platform_Cmd$none
 					};
 				} else {

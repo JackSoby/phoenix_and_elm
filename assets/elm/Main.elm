@@ -47,7 +47,7 @@ type Msg
     | HandlePhoneInput String
     | HandleCityInput String
     | HandleStateInput String
-    | NewUser (Result Http.Error (List User))
+    | NewUser (Result Http.Error User)
     | UserDeleted (Result Http.Error String)
     | HandleValidate
     | HandleUpdateValidate
@@ -75,8 +75,8 @@ update msg model =
             in
             ( model, Cmd.none )
 
-        NewUser (Ok userlist) ->
-            ( { model | users = userlist }, Cmd.none )
+        NewUser (Ok user) ->
+            ( { model | users = user :: model.users }, Cmd.none )
 
         UserDeleted (Ok userlist) ->
             ( model, getString )
@@ -261,12 +261,12 @@ newUser userInput =
             userInput
                 |> Http.jsonBody
     in
-    Http.send NewUser (Http.post "api/v1/users" body jsonDecoder)
+    Http.send NewUser (Http.post "api/v1/users" body newDecoder)
 
 
 newDecoder : Decode.Decoder User
 newDecoder =
-    Decode.field "users" decodeText
+    Decode.field "data" decodeText
 
 
 decodeText : Decode.Decoder User

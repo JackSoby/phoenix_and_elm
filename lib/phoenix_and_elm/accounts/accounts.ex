@@ -18,7 +18,10 @@ defmodule PhoenixAndElm.Accounts do
 
   """
   def list_users do
-    Repo.all(User)
+    query = from u in "users",
+    order_by: [desc: u.id],
+    select: %{id: u.id, name: u.name, email: u.email, phone: u.phone, state: u.state, city: u.city}
+    Repo.all(query)
   end
 
   @doc """
